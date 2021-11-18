@@ -1,11 +1,10 @@
-trade_upbit
-
-upbit short time auto trade program
+# trade_upbit
+## upbit short time auto trade program
 
 daily trading bot
 
-Features
+## Features
 
-Websocket-based
-python3
-Upbit API
+- Websocket-based
+- python3
+- Upbit API
