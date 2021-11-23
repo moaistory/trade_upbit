@@ -27,8 +27,10 @@ def main() :
     logger.info("binanceTrade start")
     binanceTrade = BinanceTrade(coinDict)
     binanceTrade.start()
-    while not binanceTrade.isWorking() :
-        time.sleep(1)
+
+    while upbitOrderbalance.isWorking() :
+        # Todo: trade 
+        continue
 
     logger.info("main end")
 
