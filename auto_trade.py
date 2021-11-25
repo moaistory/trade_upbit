@@ -69,7 +69,7 @@ class AutoTrade():
         closeValue = closeDf['yhat'].values[0]
         self.predicted_close_price = closeValue
 
-    def trade(self):
+    def trade(self, coinDict):
         access = config.UPBIT_ACCESS
         secret = config.UPBIT_SECRET
         slackToken = config.SLACK_TOKEN
@@ -83,15 +83,15 @@ class AutoTrade():
         upbit = pyupbit.Upbit(access, secret)
         print("autotrade start")
         self.post_message(slackToken, slackChannel, "autotrade start")
-        self.post_message(slackToken, slackChannel, "현재잔고(KRW): " + str(int(get_balance('KRW'))))
+        self.post_message(slackToken, slackChannel, "현재잔고(KRW): " + str(int(self.get_balance('KRW'))))
 
         # 자동매매 시작
         while True:
             try:
                 now = datetime.datetime.now()
                 start_time = self.get_start_time("KRW-BTC") # 9:00
-                end_time = start_time + datetime.timedelta(days=1) # 9:00 + 1일
-                # 9시 < 현재 < 8시 59분 50초
+                end_time = start_time + datetime.timedelta(days=1) # 9:00 + 1일
+                # 9시 < 현재 < 8시 59분 50초
 
                 schedule.run_pending() # 가격 예측
 
