@@ -9,6 +9,15 @@ import config
 class AutoTrade():
     def __init__(self):
         self.predicted_close_price = 0
+        self.slackToken = config.SLACK_TOKEN
+        self.slackChannel = "#auto_coin"
+        # 로그인
+        access = config.UPBIT_ACCESS
+        secret = config.UPBIT_SECRET
+        self.upbit = pyupbit.Upbit(access, secret)
+        print("autotrade start")
+        self.post_message(slackToken, slackChannel, "autotrade start")
+        self.post_message(slackToken, slackChannel, "현재잔고(KRW): " + str(int(self.get_balance('KRW'))))
 
     def post_message(self, token, channel, text):
         """슬랙 메시지 전송"""
@@ -37,8 +46,7 @@ class AutoTrade():
 
     def get_balance(self, ticker):
         """잔고 조회"""
-        upbit = pyupbit.Upbit(access, secret)
-        balances = upbit.get_balances()
+        balances = self.upbit.get_balances()
 
         for b in balances:
             if b['currency'] == ticker:
@@ -70,20 +78,10 @@ class AutoTrade():
         self.predicted_close_price = closeValue
 
     def trade(self, coinDict):
-        access = config.UPBIT_ACCESS
-        secret = config.UPBIT_SECRET
-        slackToken = config.SLACK_TOKEN
-        slackChannel = "#auto_coin"
         newday = True
 
         self.predict_price("KRW-BTC")
         schedule.every().hour.do(lambda: predict_price("KRW-BTC"))
-
-        # 로그인
-        upbit = pyupbit.Upbit(access, secret)
-        print("autotrade start")
-        self.post_message(slackToken, slackChannel, "autotrade start")
-        self.post_message(slackToken, slackChannel, "현재잔고(KRW): " + str(int(self.get_balance('KRW'))))
 
         # 자동매매 시작
         while True:
@@ -112,13 +110,13 @@ class AutoTrade():
                     if target_price < current_price and current_price < self.predicted_close_price:
                         krw = self.get_balance("KRW")
                         if krw > 5000: # 현재 잔액이 5천원 이상
-                            upbit.buy_market_order("KRW-BTC", krw*0.9995)
+                            self.upbit.buy_market_order("KRW-BTC", krw*0.9995)
                             post_message(slackToken, slackChannel, "Buy BTC with KRW " +str(krw))
                 else: # 8시 59분 50초 < 현재 < 9시
                     newday = True
                     btc = self.get_balance("BTC")
                     if btc > 0.00008: 
-                        upbit.sell_market_order("KRW-BTC", btc*0.9995) # 수수료를 제외한 전량매도
+                        self.upbit.sell_market_order("KRW-BTC", btc*0.9995) # 수수료를 제외한 전량매도
                         self.post_message(slackToken, slackChannel, "Sell KRW for BTC " +str(btc))
                 time.sleep(1)
             except Exception as e:

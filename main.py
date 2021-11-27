@@ -1,6 +1,7 @@
 from upbit_trade import UpbitTrade
 from binance_trade import BinanceTrade
 from upbit_orderbalance import UpbitOrderBalance
+from auto_trade import AutoTrade
 
 import config
 import logger
@@ -28,9 +29,9 @@ def main() :
     binanceTrade = BinanceTrade(coinDict)
     binanceTrade.start()
 
+    autoTrade = AutoTrade()
     while upbitOrderbalance.isWorking() :
-        # Todo: trade 
-        continue
+        autoTrade.trade(coinDict)
 
     logger.info("main end")
 

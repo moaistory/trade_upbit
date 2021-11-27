@@ -124,7 +124,7 @@ class Coin :
         self.tradeVolume = self.buyVolume + self.sellVolume
         self.speed = self.tradeTimeQ.qsize()
 
-        
+        """
         print ("---------------------------------------------------")
         print ("marketCode : "  + str(self.marketCode))
         print ("code : "  + str(self.code))
@@ -142,4 +142,4 @@ class Coin :
         print ("premium : "  + str(self.premium))
         print ("tradeDateTimeStr : "  + str(self.tradeDateTimeStr))
         print ("tradeDateTime : "  + str(self.tradeDateTime))
-        
+        """
