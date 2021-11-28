@@ -11,7 +11,7 @@ class Coin :
         self.code = ""
         self.koranName = ""
         self.englishName = ""
-        self.baseTime = 60
+        self.baseTime = 60 * 60 * 4 # 4시간
 
         self.price = 0.0
         self.krwPrice = 0.0
@@ -28,6 +28,12 @@ class Coin :
         self.orderBalance = 0.5
         self.premium = 0.0
 
+        # new auto trade
+        self.memStartPrices = [ 0, 0, 0, 0, 0, 0 ]
+        self.memEndPrices = [ 0, 0, 0, 0, 0, 0 ]
+        self.memVolumes = [ 0, 0, 0, 0, 0, 0 ]
+        self.stoploss_price = 0
+
         self.buyVolumeDict = {}
         self.sellVolumeDict = {}
         self.priceDict = {}
@@ -40,10 +46,10 @@ class Coin :
         jsonData["koranName"] = self.koranName
         jsonData["englishName"] = self.englishName
         jsonData["krwPrice"] = self.krwPrice
-        jsonData["buyVolume"] = self.buyVolume
-        jsonData["sellVolume"] = self.sellVolume
-        jsonData["tradeVolume"] = self.tradeVolume
-        jsonData["basePrice"] = self.basePrice
+        jsonData["buyVolume"] = self.buyVolume # 매수량
+        jsonData["sellVolume"] = self.sellVolume # 매도량
+        jsonData["tradeVolume"] = self.tradeVolume # 거래량
+        jsonData["basePrice"] = self.basePrice # 현재가격
         jsonData["difference"] = self.difference
         jsonData["rate"] = self.rate
         jsonData["speed"] = self.speed
