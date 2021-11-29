@@ -32,36 +32,36 @@ class AutoTrade():
 
     def get_target_price(self, ticker, k):
         """변동성 돌파 전략으로 매수 목표가 조회"""
-        df = self.pyupbit.get_ohlcv(ticker, interval="minute240", count=2)
+        df = pyupbit.get_ohlcv(ticker, interval="minute240", count=2)
         target_price = df.iloc[0]['close'] + (df.iloc[0]['high'] - df.iloc[0]['low']) * k
         return target_price # 목표가
 
     def get_stoploss_price(self, ticker, k):
         """손절가 조회"""
-        df = self.pyupbit.get_ohlcv(ticker, interval="minute240", count=2)
+        df = pyupbit.get_ohlcv(ticker, interval="minute240", count=2)
         stoploss_price = df.iloc[0]['close'] * (1-k)
         return stoploss_price # 목표가
 
     def get_start_time(self, ticker):
         """시작 시간 조회"""
-        df = self.pyupbit.get_ohlcv(ticker, interval="minute240", count=2)
+        df = pyupbit.get_ohlcv(ticker, interval="minute240", count=2)
         start_time = df.index[0]
         return start_time
 
     def get_ma15(self, ticker, time):
         """15일 이동 평균선 조회"""
-        df = self.pyupbit.get_ohlcv(ticker, interval=time, count=30)
+        df = pyupbit.get_ohlcv(ticker, interval=time, count=30)
         ma15 = df['close'].rolling(15).mean().iloc[-1]
         return ma15
 
     def get_ma20(self, ticker, time):
         """20일 이동 평균선 조회"""
-        df = self.pyupbit.get_ohlcv(ticker, interval=time, count=30)
+        df = pyupbit.get_ohlcv(ticker, interval=time, count=30)
         ma20 = df['close'].rolling(20).mean().iloc[-1]
         return ma20
 
     def get_mfi(self, ticker, time):
-        df = self.pyupbit.get_ohlcv(ticker, interval="minute5", count=100)
+        df = pyupbit.get_ohlcv(ticker, interval="minute5", count=100)
         df['TP'] = (df['high'] + df['low'] + df['close'])
         df['PMF'] = 0
         df['NMF'] = 0
@@ -98,7 +98,7 @@ class AutoTrade():
 
     def get_current_price(self, ticker):
         """현재가 조회"""
-        return self.pyupbit.get_orderbook(tickers=ticker)[0]["orderbook_units"][0]["ask_price"]
+        return pyupbit.get_orderbook(tickers=ticker)[0]["orderbook_units"][0]["ask_price"]
 
     def buy_coin(self, ticker, percent):
         krw = self.get_balance("KRW")

@@ -15,6 +15,10 @@ def main() :
 
     logger.info("upbitTrade start")
     upbitTrade = UpbitTrade(coinDict)
+    # 코인 목록을 받아와서 필터링해야함
+    # 현재 가격이 일봉기준 15일 선 위에 있고
+    # 기울기가 양수인 종목만 찾아서 업비트 데이터 축적
+    
     upbitTrade.start()
     while not upbitTrade.isWorking() :
         time.sleep(1)
